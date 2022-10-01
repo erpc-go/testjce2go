@@ -1,4 +1,4 @@
-module github.com/edte/testjce2go
+module github.com/erpc-go/testjce2go
 
 go 1.19
 
