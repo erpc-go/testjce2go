@@ -1,0 +1,5 @@
+github.com/erpc-go/jce-codec v0.0.0-20221001055755-9459f34bded6 h1:9qnt/z5DK32pP2qFXh8y0NgkzGI9KU7vfClXt4D5D4w=
+github.com/erpc-go/jce-codec v0.0.0-20221001055755-9459f34bded6/go.mod h1:XFOzpSLPI2T/2WhJy8zHFNt/Nr2Bk+yUXSMxsjwPKRA=
+github.com/erpc-go/jce2go v0.0.0-20221001060747-2e0636351668 h1:635CnQr6HrQQM2zmmXRuw7KrWA4zMW44/sK5kgEeC8g=
+github.com/erpc-go/jce2go v0.0.0-20221001060747-2e0636351668/go.mod h1:45l+YMRF3qMIfaSwq+fzBYA+At0Ehmfua9cBS9oNxyU=
+github.com/smartystreets/assertions v1.13.0 h1:Dx1kYM01xsSqKPno3aqLnrwac2LetPvN23diwyr69Qs=
