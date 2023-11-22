@@ -29,16 +29,22 @@ const (
 	TUP_VERSION  int32 = 0x03
 )
 
-// Request struct implement
-type Request struct {
-	B int8 `json:"b" tag:"1"`
+// Message struct implement
+type Message struct {
+	StrTitle     string `json:"strTitle" tag:"0"`
+	StrBody      string `json:"strBody" tag:"1"`
+	StrPayload   string `json:"strPayload" tag:"2"`
+	StrChannelId string `json:"strChannelId" tag:"3"`
+	IBadge       int32  `json:"iBadge" tag:"4"`
+	StrImage     string `json:"strImage" tag:"5"`
+	INotifyId    int32  `json:"iNotifyId" tag:"6"`
 }
 
-func (st *Request) resetDefault() {
+func (st *Message) resetDefault() {
 }
 
 // ReadFrom reads from io.Reader and put into struct.
-func (st *Request) ReadFrom(r io.Reader) (n int64, err error) {
+func (st *Message) ReadFrom(r io.Reader) (n int64, err error) {
 	var (
 		have bool
 		ty   jce.JceEncodeType
@@ -51,8 +57,32 @@ func (st *Request) ReadFrom(r io.Reader) (n int64, err error) {
 		return
 	}
 
-	// [step 1] read B
-	if err = decoder.ReadInt8(&st.B, 1, true); err != nil {
+	// [step 0] read StrTitle
+	if err = decoder.ReadString(&st.StrTitle, 0, false); err != nil {
+		return
+	}
+	// [step 1] read StrBody
+	if err = decoder.ReadString(&st.StrBody, 1, false); err != nil {
+		return
+	}
+	// [step 2] read StrPayload
+	if err = decoder.ReadString(&st.StrPayload, 2, false); err != nil {
+		return
+	}
+	// [step 3] read StrChannelId
+	if err = decoder.ReadString(&st.StrChannelId, 3, false); err != nil {
+		return
+	}
+	// [step 4] read IBadge
+	if err = decoder.ReadInt32(&st.IBadge, 4, false); err != nil {
+		return
+	}
+	// [step 5] read StrImage
+	if err = decoder.ReadString(&st.StrImage, 5, false); err != nil {
+		return
+	}
+	// [step 6] read INotifyId
+	if err = decoder.ReadInt32(&st.INotifyId, 6, false); err != nil {
 		return
 	}
 
@@ -67,7 +97,7 @@ func (st *Request) ReadFrom(r io.Reader) (n int64, err error) {
 }
 
 // WriteTo encode struct to io.Writer
-func (st *Request) WriteTo(w io.Writer) (n int64, err error) {
+func (st *Message) WriteTo(w io.Writer) (n int64, err error) {
 	encoder := jce.NewEncoder(w)
 	st.resetDefault()
 
@@ -75,8 +105,197 @@ func (st *Request) WriteTo(w io.Writer) (n int64, err error) {
 		return
 	}
 
-	// [step 1] write B
-	if err = encoder.WriteInt8(st.B, 1); err != nil {
+	// [step 0] write StrTitle
+	if err = encoder.WriteString(st.StrTitle, 0); err != nil {
+		return
+	}
+	// [step 1] write StrBody
+	if err = encoder.WriteString(st.StrBody, 1); err != nil {
+		return
+	}
+	// [step 2] write StrPayload
+	if err = encoder.WriteString(st.StrPayload, 2); err != nil {
+		return
+	}
+	// [step 3] write StrChannelId
+	if err = encoder.WriteString(st.StrChannelId, 3); err != nil {
+		return
+	}
+	// [step 4] write IBadge
+	if err = encoder.WriteInt32(st.IBadge, 4); err != nil {
+		return
+	}
+	// [step 5] write StrImage
+	if err = encoder.WriteString(st.StrImage, 5); err != nil {
+		return
+	}
+	// [step 6] write INotifyId
+	if err = encoder.WriteInt32(st.INotifyId, 6); err != nil {
+		return
+	}
+
+	if err = encoder.WriteStructEnd(); err != nil {
+		return
+	}
+
+	// flush to io.Writer
+	err = encoder.Flush()
+	return
+}
+
+// AndroidReq struct implement
+type AndroidReq struct {
+	IAppid       int32   `json:"iAppid" tag:"0"`
+	StrMessageId string  `json:"strMessageId" tag:"1"`
+	StrToken     string  `json:"strToken" tag:"2"`
+	StMessage    Message `json:"stMessage" tag:"3"`
+}
+
+func (st *AndroidReq) resetDefault() {
+}
+
+// ReadFrom reads from io.Reader and put into struct.
+func (st *AndroidReq) ReadFrom(r io.Reader) (n int64, err error) {
+	var (
+		have bool
+		ty   jce.JceEncodeType
+	)
+
+	decoder := jce.NewDecoder(r)
+	st.resetDefault()
+
+	if err = decoder.ReadStructBegin(); err != nil {
+		return
+	}
+
+	// [step 0] read IAppid
+	if err = decoder.ReadInt32(&st.IAppid, 0, false); err != nil {
+		return
+	}
+	// [step 1] read StrMessageId
+	if err = decoder.ReadString(&st.StrMessageId, 1, false); err != nil {
+		return
+	}
+	// [step 2] read StrToken
+	if err = decoder.ReadString(&st.StrToken, 2, false); err != nil {
+		return
+	}
+	// [step 3] read StMessage
+	if _, err = st.StMessage.ReadFrom(decoder.Reader()); err != nil {
+		return
+	}
+
+	if err = decoder.ReadStructEnd(); err != nil {
+		return
+	}
+
+	_ = err
+	_ = have
+	_ = ty
+	return
+}
+
+// WriteTo encode struct to io.Writer
+func (st *AndroidReq) WriteTo(w io.Writer) (n int64, err error) {
+	encoder := jce.NewEncoder(w)
+	st.resetDefault()
+
+	if err = encoder.WriteStructBegin(); err != nil {
+		return
+	}
+
+	// [step 0] write IAppid
+	if err = encoder.WriteInt32(st.IAppid, 0); err != nil {
+		return
+	}
+	// [step 1] write StrMessageId
+	if err = encoder.WriteString(st.StrMessageId, 1); err != nil {
+		return
+	}
+	// [step 2] write StrToken
+	if err = encoder.WriteString(st.StrToken, 2); err != nil {
+		return
+	}
+	// [step 3] write StMessage
+	if _, err = st.StMessage.WriteTo(encoder.Writer()); err != nil {
+		return
+	}
+
+	if err = encoder.WriteStructEnd(); err != nil {
+		return
+	}
+
+	// flush to io.Writer
+	err = encoder.Flush()
+	return
+}
+
+// AndroidRsp struct implement
+type AndroidRsp struct {
+	IResult         int32  `json:"iResult" tag:"0"`
+	IFactoryRspCode int32  `json:"iFactoryRspCode" tag:"1"`
+	StrFactoryRspId string `json:"strFactoryRspId" tag:"2"`
+}
+
+func (st *AndroidRsp) resetDefault() {
+}
+
+// ReadFrom reads from io.Reader and put into struct.
+func (st *AndroidRsp) ReadFrom(r io.Reader) (n int64, err error) {
+	var (
+		have bool
+		ty   jce.JceEncodeType
+	)
+
+	decoder := jce.NewDecoder(r)
+	st.resetDefault()
+
+	if err = decoder.ReadStructBegin(); err != nil {
+		return
+	}
+
+	// [step 0] read IResult
+	if err = decoder.ReadInt32(&st.IResult, 0, false); err != nil {
+		return
+	}
+	// [step 1] read IFactoryRspCode
+	if err = decoder.ReadInt32(&st.IFactoryRspCode, 1, false); err != nil {
+		return
+	}
+	// [step 2] read StrFactoryRspId
+	if err = decoder.ReadString(&st.StrFactoryRspId, 2, false); err != nil {
+		return
+	}
+
+	if err = decoder.ReadStructEnd(); err != nil {
+		return
+	}
+
+	_ = err
+	_ = have
+	_ = ty
+	return
+}
+
+// WriteTo encode struct to io.Writer
+func (st *AndroidRsp) WriteTo(w io.Writer) (n int64, err error) {
+	encoder := jce.NewEncoder(w)
+	st.resetDefault()
+
+	if err = encoder.WriteStructBegin(); err != nil {
+		return
+	}
+
+	// [step 0] write IResult
+	if err = encoder.WriteInt32(st.IResult, 0); err != nil {
+		return
+	}
+	// [step 1] write IFactoryRspCode
+	if err = encoder.WriteInt32(st.IFactoryRspCode, 1); err != nil {
+		return
+	}
+	// [step 2] write StrFactoryRspId
+	if err = encoder.WriteString(st.StrFactoryRspId, 2); err != nil {
 		return
 	}
 
